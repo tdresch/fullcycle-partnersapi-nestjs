@@ -1,0 +1,72 @@
+GET http://localhost:3000/events
+###
+
+# @name createEvent
+POST http://localhost:3000/events
+Content-Type: application/json
+
+{
+    "name": "New Event",
+    "description": "This is a new event",
+    "date": "2017-01-01T00:00:00",
+    "price": 100
+}
+###
+@eventId = {{createEvent.response.body.id}}
+###
+
+GET http://localhost:3000/events/{{eventId}}
+###
+
+PATCH http://localhost:3000/events/{{eventId}}
+Content-Type: application/json
+
+{
+    "name": "Change New Event",
+    "description": "This is a new event",
+    "date": "2017-01-01T00:00:00",
+    "price": 100
+}
+
+###
+
+DELETE  http://localhost:3000/events/{{eventId}}
+###
+
+# @name createSpot
+POST http://localhost:3000/events/{{eventId}}/spots
+Content-Type: application/json
+
+{
+    "name": "p1-Z1"
+}
+
+###
+GET http://localhost:3000/events/{{eventId}}/spots
+###
+GET http://localhost:3000/events/{{eventId}}/spots/e7e74840-5b86-4dde-b092-3ceff92c0731
+
+
+###
+
+PATCH http://localhost:3000/events/3c826da3-3dc6-40c3-ab4d-444c17d1f1c1/spots/e7e74840-5b86-4dde-b092-3ceff92c0731
+Content-Type: application/json
+
+{
+    "name": "B1"
+}
+
+###
+@spotName = {{createSpot.response.body.name}}
+###
+
+POST http://localhost:3000/events/{{eventId}}/reserve
+Content-Type: application/json
+X-Api-Token: 123
+
+{
+    "spots": ["{{spotName}}"],
+    "ticket_kind": "full",
+    "email": "tiago@teste.com"
+}
+###
